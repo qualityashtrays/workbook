@@ -7,6 +7,16 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+
+// Icosahedron
+const radius = 5; // Make it larger than the camera's view
+const detail = 1; // Adjust for level of detail (0 is a basic icosahedron)
+const icosahedronGeometry = new THREE.IcosahedronGeometry(radius, detail); 
+const icosahedronMaterial = new THREE.MeshBasicMaterial({ color: 0x003030, wireframe: true }); // Cyan, wireframe for visibility
+const icosahedron = new THREE.Mesh(icosahedronGeometry, icosahedronMaterial);
+scene.add(icosahedron);
+
+
 // --- Spiral 1 (r = a^(-theta)) ---
 function createSpiral1(a, numPoints, maxTheta, color) {
     const vertices = [];
@@ -99,7 +109,7 @@ function createSpiral4(a, numPoints, maxTheta, color) {
 
 // --- Parameters ---
 let a = 1.5; // Initial 'a' value
-const numPoints = 500;
+const numPoints = 250;
 const maxTheta = 9 * Math.PI; // Adjust for number of turns
 
 // --- Colors ---
@@ -128,7 +138,9 @@ camera.lookAt(0, 0, 0);
 
 // --- Animation Loop ---
 let animationDirection = 1; // 1 for increasing, -1 for decreasing
-const animationSpeed = 0.0002; // Adjust for animation speed
+const animationSpeed = 0.00025; // Adjust for animation speed
+let rotationSpeed = 0.00025; // Adjust rotation speed
+
 
 function animate() {
     requestAnimationFrame(animate);
@@ -178,6 +190,10 @@ function animate() {
     spiral4.geometry.dispose();
     spiral4.material.dispose();
     spiral4 = newSpiral4;
+
+
+    // Rotate the icosahedron around the z-axis
+    icosahedron.rotation.z += rotationSpeed;
 
     renderer.render(scene, camera);
 }

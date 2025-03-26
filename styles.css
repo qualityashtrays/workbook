@@ -4,7 +4,7 @@
     }
     
 }
-body, a, h1, h2, p, li, button {
+body, a, h1, p, li, button {
     font-family: 'Courier Prime', "Courier New", Courier, monospace;
     font-weight: 400;
     font-style: normal;
@@ -47,16 +47,65 @@ body, a, h1, h2, p, li, button {
     
 header{
         background-color: #333;
-        color: white;
+        color: #333;
         text-align: center;
-        padding: ;
+        padding: 0;
+
+       
 }
 
 h1{
         font-family: "courier prime bold", monospace;
-        font-size: ;
-        padding: ;
+        font-size: 20px;
+        font-weight: 700;
+        padding-left: 20px ;
+        margin: none;
+        text-align: left;
+        position: relative;
+        top: -55.5px;
+        left: 100px;
+        width: 100%;
+        height: 42.5px;
+        padding-top: 6px;
+        color: #ff0000;
+        background-color: #111;
+        
+        
     }
+
+h2{
+        font-family: "courier prime bold", monospace;
+        font-size: 30px;
+        font-weight: 700;
+        padding-left: 50px; ;
+        margin: ;
+        text-align: left;
+        
+        position: relative;
+        top: -30px;
+        left: 50px;
+        width: 100%;
+        font-style: italic;
+        
+    }
+
+    h3{
+        font-family: "courier prime bold", monospace;
+        font-size: 30px;
+        font-weight: 700;
+        padding-left: 50px; ;
+        margin: ;
+        text-align: left;
+        
+        position: relative;
+        top: 30px;
+        left: 50px;
+        width: 100%;
+        font-style: italic;
+        padding-bottom: 60px;
+        
+    }
+
 
 body{
         font-weight: 400;
@@ -67,15 +116,24 @@ body{
         padding: 0;
         width: 100%;
         height: 0%;
+        background-color: #333;
+        color: #111
     }
 flex-row{
         font-family: "courier prime", monospace;
         height: 90vh;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start
+        align-items: flex-start
         flex-direction: row;
         margin: 0;
         padding: 0;
+        position: relative;
+        
+        width: 100%;
+        color: #333;
+        background-color: #444;
+        
     }
 
 content{
@@ -88,18 +146,131 @@ content{
     }
 button{
         font-family: "courier prime", monospace;
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 400;
         font-style: normal;
         padding: 10px 20px;
         margin: ;
         border: none;
-        border-radius: ;
-        background-color: #333;
+        border-radius: 0;
+        background-color: #111;
         color: white;
         cursor: pointer;
+        
     }
 
 button:hover{
         background-color: #444;
     }
+
+    .column {
+        float: left;
+        
+      }
+      
+      /* Left and right column */
+      .column.side {
+        width: 25%;
+        padding-left: 25px;
+      }
+      
+      /* Middle column */
+      .column.middle {
+        width: 50%;
+        
+        
+      }
+      
+      /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+      @media screen and (max-width: 600px) {
+        .column.side, .column.middle {
+          width: 100%;
+        }
+      }
+
+    
+
+    div.gallery {
+        margin: 0px;
+        border: 1px solid aqua;
+    
+        width: auto;
+        display: grid;
+        grid-template-columns: 500px 500px;
+        grid-gap: 10px;
+        padding: 10px;
+        background-color: aqua;
+        margin-left: -100px;
+        margin-right: 20px;
+        margin-bottom: 60px;
+      }
+      
+      div.gallery:hover {
+        border: 1px solid #777;
+      }
+      
+      div.gallery img {
+        width: 100%;
+        height: auto;
+      }
+      
+      div.desc {
+        padding: 15px;
+        text-align: center;
+      }
+
+audio-container{
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        float: left;
+        top: 0;
+        right: 100px;
+        width: 100%;
+        height: 100%;
+        
+        z-index: 15;
+
+}
+
+.green-link {
+    color: #00ff00;
+}
+
+p {
+    font-family: 'Courier Prime', "Courier New", Courier, monospace;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px; /* Adjust as needed */
+    line-height: 1; /* Adjust as needed */
+    text-align: left  
+    z-index: 20;
+    position: relative;
+    width: 325px;
+    background-color:;
+    color: #ffaa50;
+    
+}
+
+p2 {
+    font-family: 'Courier Prime', "Courier New", Courier, monospace;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px; /* Adjust as needed */
+    line-height: 2; /* Adjust as needed */
+    text-align: left  
+    z-index: 20;
+    position: relative;
+    width: 325px;
+    background-color:;
+    color: #ffaa50;
+    
+}
+
+
+.stacked-sections {
+    display: flex;
+    flex-direction: column;
+  
