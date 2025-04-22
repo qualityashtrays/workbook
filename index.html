@@ -5,7 +5,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.5/lib/p5.min.js"></script>
+    <link rel="stylesheet" href="https://use.typekit.net/kxq5syt.css">
     <!-- three.js CDN  -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,19 +33,22 @@
 
 
 
-<body>
+<body class="main-page">
+    <div id="mask-overlay"></div>
+
     <script type="module" src="./script.js"></script>
  
 
     <header>
     <!-- <img src="img\3_7_2024_10_01_pm_Microsoft_Lens.pdf1_Page_17_Image_0001 (2024_12_31 17_53_48 UTC).jpg" alt="1"> -->
     <!-- <img src="img\IMG_1393 (2024_12_31 17_53_48 UTC).JPG" alt="2"> -->
-     <div class="flex-row">
-            <div id="menu-column"> 
+     <!-- <div class="flex-row"> -->
+            <!-- <div id="menu-column"> 
                 <a href="week-1\index.html"> <button> WEEK 1</button> </a>
                 <a href="week-2\index.html"> <button> WEEK 2</button> </a>
                 <a href="week-3\index.html"> <button> WEEK 3</button> </a>
-            </div>
+                <a href="week-4\index4.html"> <button> WEEK 4</button> </a>
+            </div> -->
             <div id="audio-container">
                 <audio  autoplay="true">
                     <source src="./sound\Mac Miller - Tomorrow Will Never Know.mp3" type="audio/mpeg">
@@ -53,6 +57,32 @@
             </div>
         </div>
     </header>
+    <div class="container">   
+        <div class="item item1"> </div>
+        <div class="item item2"> </div>
+        <div class="item item3"> </div>
+        <div class="item item4"> </div>
+        <div class="item item5"> </div>
+        <div class="item item6"> </div>
+        <div class="item item7"> </div>
+        <div class="item item8"> </div>
+    </div>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times; </a>
+        <a href="week-6/index6.html">VI</a>
+        <a href="week-5/index5.html">V</a>
+        <a href="week-4/index4.html">IV</a>
+        <a href="week-3/index.html">III</a>
+        <a href="week-2/index.html">II</a>
+        <a href="week-1/index.html">I</a>
+        <a href="index.html">&#43612;</a>
+      </div>
+
+      <div id="main">
+        <button class="openbtn" onclick="openNav()">&#9776;</button>
+        <button class="backbtn" onclick="">-</button>
+      </div>
+      
     <div id= "text-container"> 
         <p> // workbook prototype</p>
         <p> //       interactive media</p>
@@ -64,7 +94,8 @@
     </div>
     <!-- <canvas type="module"></canvas>" -->
     
-    
+    <!-- https://www.w3schools.com/howto/howto_js_collapse_sidebar.asp -->
+    <!-- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapse_sidebar-->
     
 </body>
 </html>

@@ -1,200 +1,155 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.module.js';
 
+// --- Scene Setup ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+// Set a background color for the scene (optional, helps if mask isn't perfectly black)
+scene.background = new THREE.Color(0x000000);
 document.body.appendChild(renderer.domElement);
 
-
-// Icosahedron
-const radius = 5; // Make it larger than the camera's view
-const detail = 1; // Adjust for level of detail (0 is a basic icosahedron)
-const icosahedronGeometry = new THREE.IcosahedronGeometry(radius, detail); 
-const icosahedronMaterial = new THREE.MeshBasicMaterial({ color: 0x003030, wireframe: true }); // Cyan, wireframe for visibility
+// --- Icosahedron ---
+const radius = 5;
+const detail = 1;
+const icosahedronGeometry = new THREE.IcosahedronGeometry(radius, detail);
+const icosahedronMaterial = new THREE.MeshBasicMaterial({ color: 0x003030, wireframe: true });
 const icosahedron = new THREE.Mesh(icosahedronGeometry, icosahedronMaterial);
 scene.add(icosahedron);
 
-
-// --- Spiral 1 (r = a^(-theta)) ---
-function createSpiral1(a, numPoints, maxTheta, color) {
-    const vertices = [];
-    for (let i = 0; i < numPoints; i++) {
-        const theta = (i / numPoints) * maxTheta; // Angle (theta)
-        const r = a ** (-theta); // Radius (r) based on the formula r = a^(-theta)
-
-        // Convert polar coordinates (r, theta) to Cartesian (x, y)
-        const x = r * Math.cos(theta);
-        const y = r * Math.sin(theta);
-        const z = 0; // Keep it flat on the x-y plane for now
-
-        vertices.push(x, y, z);
-    }
-
-    const geometry = new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    const material = new THREE.LineBasicMaterial({ color: color });
-    const spiral = new THREE.Line(geometry, material);
-    return spiral;
-}
-
-// --- Spiral 2 (r = -a^(-theta)) ---
-function createSpiral2(a, numPoints, maxTheta, color) {
-    const vertices = [];
-    for (let i = 0; i < numPoints; i++) {
-        const theta = (i / numPoints) * maxTheta; // Angle (theta)
-        const r = -(a ** (-theta)); // Radius (r) based on the formula r = -a^(-theta)
-
-        // Convert polar coordinates (r, theta) to Cartesian (x, y)
-        const x = r * Math.cos(theta);
-        const y = r * Math.sin(theta);
-        const z = 0; // Keep it flat on the x-y plane for now
-
-        vertices.push(x, y, z);
-    }
-
-    const geometry = new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    const material = new THREE.LineBasicMaterial({ color: color });
-    const spiral = new THREE.Line(geometry, material);
-    return spiral;
-}
-
-// --- Spiral 3 (r = 0.33a^(theta) - 0.33) ---
-function createSpiral3(a, numPoints, maxTheta, color) {
-    const vertices = [];
-    for (let i = 0; i < numPoints; i++) {
-        const theta = (i / numPoints) * maxTheta; // Angle (theta)
-        const r = 0.33 * (a ** theta) - 0.33; // Radius (r) based on the formula r = 0.33a^(theta) - 0.33
-
-        // Ensure r is not negative (avoid undefined behavior)
-        const safeR = Math.max(0, r);
-
-        // Convert polar coordinates (r, theta) to Cartesian (x, y)
-        const x = safeR * Math.cos(theta);
-        const y = safeR * Math.sin(theta);
-        const z = 0; // Keep it flat on the x-y plane for now
-
-        vertices.push(x, y, z);
-    }
-
-    const geometry = new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    const material = new THREE.LineBasicMaterial({ color: color });
-    const spiral = new THREE.Line(geometry, material);
-    return spiral;
-}
-
-// --- Spiral 4 (r = -0.33a^(theta) + 0.33 + theta) ---
-function createSpiral4(a, numPoints, maxTheta, color) {
-    const vertices = [];
-    for (let i = 0; i < numPoints; i++) {
-        const theta = (i / numPoints) * maxTheta; // Angle (theta)
-        const r = 0.33 * (a ** theta) - 0.33; // Radius (r) based on the formula r = -0.33a^(theta) + 0.33 + theta
-
-        // Ensure r is not negative (avoid undefined behavior)
-        const safeR = Math.max(0, r);
-
-        // Convert polar coordinates (r, theta) to Cartesian (x, y)
-        const x = -safeR * Math.cos(theta);
-        const y = -safeR * Math.sin(theta);
-        const z = 0; // Keep it flat on the x-y plane for now
-
-        vertices.push(x, y, z);
-    }
-
-    const geometry = new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    const material = new THREE.LineBasicMaterial({ color: color });
-    const spiral = new THREE.Line(geometry, material);
-    return spiral;
-}
-
-// --- Parameters ---
-let a = 1.5; // Initial 'a' value
+// --- Spiral Parameters ---
 const numPoints = 250;
-const maxTheta = 9 * Math.PI; // Adjust for number of turns
+const maxTheta = 9 * Math.PI;
+let a = 1.5; // Initial 'a' value
 
-// --- Colors ---
-const spiral1Color = 0x00ff00; // Green
-const spiral2Color = 0x00ffff; // Blue
-const spiral3Color = 0xff0000; // Red
-const spiral4Color = 0xffa500; // Orange
+// --- Spiral Creation Function (Optimized) ---
+function createSpiral(radiusFunc, numPoints, maxTheta, color) {
+    const vertices = new Float32Array(numPoints * 3);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
 
-// --- Create and Add Spirals ---
-let spiral1 = createSpiral1(a, numPoints, maxTheta, spiral1Color);
-scene.add(spiral1);
+    const material = new THREE.LineBasicMaterial({ color: color });
+    const spiral = new THREE.Line(geometry, material);
 
-let spiral2 = createSpiral2(a, numPoints, maxTheta, spiral2Color);
-scene.add(spiral2);
+    return {
+        mesh: spiral,
+        geometry: geometry,
+        update: (currentA) => {
+            const positions = geometry.attributes.position.array;
+            let vertexIndex = 0;
+            for (let i = 0; i < numPoints; i++) {
+                const theta = (i / (numPoints - 1)) * maxTheta;
+                const r = radiusFunc(currentA, theta);
+                const x = r * Math.cos(theta);
+                const y = r * Math.sin(theta);
+                const z = 0;
+                positions[vertexIndex++] = x;
+                positions[vertexIndex++] = y;
+                positions[vertexIndex++] = z;
+            }
+            geometry.attributes.position.needsUpdate = true;
+            // geometry.computeBoundingSphere(); // Optional
+        }
+    };
+}
 
-let spiral3 = createSpiral3(a, numPoints, maxTheta, spiral3Color);
-scene.add(spiral3);
+// --- Define Radius Calculation Functions ---
+const radiusFunc1 = (a, theta) => a ** (-theta);
+const radiusFunc2 = (a, theta) => -(a ** (-theta));
+const radiusFunc3 = (a, theta) => Math.max(0, 0.33 * (a ** theta) - 0.33);
+const radiusFunc4 = (a, theta) => Math.max(0, 0.33 * (a ** theta) - 0.33);
 
-let spiral4 = createSpiral4(a, numPoints, maxTheta, spiral4Color);
-scene.add(spiral4);
+// --- Create Spirals ---
+const spirals = [
+    createSpiral(radiusFunc1, numPoints, maxTheta, 0x00ff00), // Green
+    createSpiral(radiusFunc2, numPoints, maxTheta, 0x00ffff), // Cyan
+    createSpiral(radiusFunc3, numPoints, maxTheta, 0xff0000), // Red
+    createSpiral(radiusFunc4, numPoints, maxTheta, 0xffa500)  // Orange (negation handled in animate)
+];
+
+// --- Add Spirals to Scene ---
+spirals.forEach(spiralData => scene.add(spiralData.mesh));
 
 // --- Camera Setup ---
-camera.position.z = .7;
+camera.position.z = 0.7;
 camera.position.y = 0;
 camera.lookAt(0, 0, 0);
 
+// --- Animation Variables ---
+let isAnimating = true; // <<<--- New flag to control animation state
+let animationDirection = 1;
+const animationSpeed = 0.00025;
+const rotationSpeed = 0.00025;
+
 // --- Animation Loop ---
-let animationDirection = 1; // 1 for increasing, -1 for decreasing
-const animationSpeed = 0.00025; // Adjust for animation speed
-let rotationSpeed = 0.00025; // Adjust rotation speed
-
-
 function animate() {
-    requestAnimationFrame(animate);
+    // Only perform updates if isAnimating is true
+    if (isAnimating) {
+        // Update 'a' value
+        a += animationDirection * animationSpeed;
 
-    // Update 'a' value
-    a += animationDirection * animationSpeed;
+        // Reverse direction if 'a' reaches the limits
+        if (a >= 2.0) {
+            a = 2.0;
+            animationDirection = -1;
+        } else if (a <= 1.0) {
+            a = 1.0;
+            animationDirection = 1;
+        }
 
-    // Reverse direction if 'a' reaches the limits
-    if (a >= 2) {
-        animationDirection = -1;
-    } else if (a <= 1) {
-        animationDirection = 1;
-    }
+        // Update spiral vertices
+        spirals[0].update(a);
+        spirals[1].update(a);
+        spirals[2].update(a);
 
-    // Remove old spirals
-    scene.remove(spiral1);
-    scene.remove(spiral2);
-    scene.remove(spiral3);
-    scene.remove(spiral4);
+        // Special handling for spiral 4's coordinate negation
+        const positions4 = spirals[3].geometry.attributes.position.array;
+        let vertexIndex4 = 0;
+        const currentA = a; // Use a consistent 'a' for this frame
+        for (let i = 0; i < numPoints; i++) {
+            const theta = (i / (numPoints - 1)) * maxTheta;
+            const r = radiusFunc4(currentA, theta);
+            const x = -r * Math.cos(theta); // Negate x
+            const y = -r * Math.sin(theta); // Negate y
+            const z = 0;
+            positions4[vertexIndex4++] = x;
+            positions4[vertexIndex4++] = y;
+            positions4[vertexIndex4++] = z;
+        }
+        spirals[3].geometry.attributes.position.needsUpdate = true;
 
-    // Create new spirals with updated 'a' value
-    const newSpiral1 = createSpiral1(a, numPoints, maxTheta, spiral1Color);
-    scene.add(newSpiral1);
+        // Rotate the icosahedron
+        icosahedron.rotation.z += rotationSpeed;
+    } // <<<--- End of isAnimating check
 
-    const newSpiral2 = createSpiral2(a, numPoints, maxTheta, spiral2Color);
-    scene.add(newSpiral2);
-
-    const newSpiral3 = createSpiral3(a, numPoints, maxTheta, spiral3Color);
-    scene.add(newSpiral3);
-
-    const newSpiral4 = createSpiral4(a, numPoints, maxTheta, spiral4Color);
-    scene.add(newSpiral4);
-
-    // Update references to the new spirals
-    spiral1.geometry.dispose();
-    spiral1.material.dispose();
-    spiral1 = newSpiral1;
-
-    spiral2.geometry.dispose();
-    spiral2.material.dispose();
-    spiral2 = newSpiral2;
-
-    spiral3.geometry.dispose();
-    spiral3.material.dispose();
-    spiral3 = newSpiral3;
-
-    spiral4.geometry.dispose();
-    spiral4.material.dispose();
-    spiral4 = newSpiral4;
-
-
-    // Rotate the icosahedron around the z-axis
-    icosahedron.rotation.z += rotationSpeed;
-
+    // Always render the scene, even if paused, to keep it responsive
     renderer.render(scene, camera);
 }
+
+// --- Handle Window Resize ---
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    // Note: If you change the mask size based on window size, update it here too.
+}
+window.addEventListener('resize', onWindowResize, false);
+
+// --- Handle Click to Toggle Animation --- // <<<--- New Event Listener
+renderer.domElement.addEventListener('click', () => {
+    isAnimating = !isAnimating; // Toggle the flag
+    console.log("Animation " + (isAnimating ? "Resumed" : "Paused")); // Optional feedback
+});
+
+
+// --- Start Animation ---
 renderer.setAnimationLoop(animate);
+
+window.openNav = function() {
+    document.getElementById("mySidebar").style.width = "80px";
+    document.getElementById("main").style.marginLeft = "0px";
+  }
+  window.closeNav = function() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+  }
