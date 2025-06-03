@@ -1,104 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.5/lib/p5.min.js"></script>
-    <link rel="stylesheet" href="https://use.typekit.net/kxq5syt.css">
-    <!-- three.js CDN  -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>workbook prototype    </title>
-   
+    <title>Three.js and aframe Scene</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="./look-at.js"></script>
+    <link rel="stylesheet" href="https://use.typekit.net/kxq5syt.css">
+    <style>
+       
+    </style>
 </head>
+<body>
+    <!-- main.js is imported by the component script below -->
+    <a-scene>
+        <a-assets>
+            <img id="week_1" src="./img/week_1.png">
+            <img id="week_2" src="./img/week_2.png">
+            <img id="week_3" src="./img/week_3.png">
+            <img id="week_4" src="./img/week_4.png">
+            <img id="week_5" src="./img/week_5.png">
+            <img id="week_6" src="./img/week_6.png">
+            <img id="week_7" src="./img/week_7.png">
+            <img id="week_8" src="./img/week_8.png">
+            <img id="week_9" src="./img/week_9.png">
+          </a-assets>
+        
+        <a-plane position="0 -3 -2" rotation="-90 45 0" width="6" height="6" color="#7BC8A4"></a-plane>
+        <a-entity id="custom-octahedron" material="opacity: 0.37; shader: standard; side: back; vertexColorsEnabled: false; color: #0964f6" position="0 1.6 -2" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear;"></a-entity>
+        <a-sky color="#8ECAE6"></a-sky>
+        <a-entity id="camera" camera look-controls wasd-controls position="0 1.6 4"> </a-entity>
+        <a-entity line="start: 0 0.5 -2; end: 0 2.5 -2; color: lightblue; opacity= 0.25; transparency=true"></a-entity>
+        <a-entity line__2="start: 0 0.5 -2; end: 0 2.5 -2; color: blue; opacity= 0.25; transparency=true"></a-entity>
+        <!--<a-entity  line__3=" color=blue; start: -3 1.6 0; end: 3 1.6 0;" opacity="0.2"></a-entity>-->
 
-<style>
-     body { margin: 0; }
-    canvas { display: block; } /* Prevents scrollbars */
+        <a-sphere color="blue" radius=".04" position="0 -2.4 -2" opacity="0.25"></a-sphere>
+        <a-sphere color="blue" radius=".04" position="0 5.6 -2" opacity="0.25"></a-sphere>
+        <!--<a-sphere color="blue" radius=".04" position="0 1.6 -2" opacity="0.25"></a-sphere> -->
+        
+        <!-- Outline triangle -->
+        <a-triangle id="triangle-outline" color="blue" vertex-a="0 5.7 0" vertex-b="-3.2 1.54 0" vertex-c="3.2 1.54 0" position="0 0 -2" opacity="0.25"></a-triangle>
+        
+        <!-- Main triangle using THREE.Line for thicker wireframe -->
+        <a-entity id="triangle" position="0 0 -2"></a-entity>
+
+        <a-entity line="start: 0 5.4 0; end: -2.7 1.6 0; color: blue; opacity: 1;" position="0 0 -2"></a-entity>
+        <a-entity line="start: -2.7 1.6 0; end: 2.7 1.6 0; color: blue; opacity: 1;" position="0 0 -2"></a-entity>
+        <a-entity line="start: 2.7 1.6 0; end: 0 5.4 0; color: blue; opacity: 1;" position="0 0 -2"></a-entity>
+        <a-entity id="custom-octahedron-2" material="opacity: 0.37; side: back; color: #0964f6" position="0 1.6 -2" animation="dir: reverse; dur: 10000; easing: linear; loop: true; property: rotation; to: 0 360 0" custom-octahedron=""></a-entity>
     
-    #text-container {
-      position: absolute; /* Important: For positioning relative to the viewport */
-      top: 43px; /* Adjust vertical position */
-      left: 33px; /* Adjust horizontal position */
-      z-index: 10; /* Ensure text is on top of the canvas */
-      font-family: 'Courier Prime', "Courier New", Courier, monospace; /* Set font */
-      color: greenyellow;
-      text-align: left;
-        font-size: 1.5em;
-        text-leading: 1em;
-    }
-  </style>
+        <!-- Entity for the spiral floor -->
+        <a-entity spiral-floor position="0 -2.95 -2"></a-entity>
 
-
-
-<body class="main-page">
-    <div id="mask-overlay"></div>
-
-    <script type="module" src="./script.js"></script>
- 
-
-    <header>
-    <!-- <img src="img\3_7_2024_10_01_pm_Microsoft_Lens.pdf1_Page_17_Image_0001 (2024_12_31 17_53_48 UTC).jpg" alt="1"> -->
-    <!-- <img src="img\IMG_1393 (2024_12_31 17_53_48 UTC).JPG" alt="2"> -->
-     <!-- <div class="flex-row"> -->
-            <!-- <div id="menu-column"> 
-                <a href="week-1\index.html"> <button> WEEK 1</button> </a>
-                <a href="week-2\index.html"> <button> WEEK 2</button> </a>
-                <a href="week-3\index.html"> <button> WEEK 3</button> </a>
-                <a href="week-4\index4.html"> <button> WEEK 4</button> </a>
-            </div> -->
-            <div id="audio-container">
-                <audio  autoplay="true">
-                    <source src="./sound\Mac Miller - Tomorrow Will Never Know.mp3" type="audio/mpeg">
-                  Your browser does not support the audio element.
-                  </audio>
-            </div>
-        </div>
-    </header>
-    <div class="container">   
-        <div class="item item1"> </div>
-        <div class="item item2"> </div>
-        <div class="item item3"> </div>
-        <div class="item item4"> </div>
-        <div class="item item5"> </div>
-        <div class="item item6"> </div>
-        <div class="item item7"> </div>
-        <div class="item item8"> </div>
-    </div>
-    <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times; </a>
-        <a href="../week-9/index9.html">IX</a>
-        <a href="../week-8/index8.html">VIII</a>
-        <a href="../week-7/index7.html">VII</a>
-        <a href="week-6/index6.html">VI</a>
-        <a href="week-5/index5.html">V</a>
-        <a href="week-4/index4.html">IV</a>
-        <a href="week-3/index.html">III</a>
-        <a href="week-2/index.html">II</a>
-        <a href="week-1/index.html">I</a>
-        <a href="index.html">&#43612;</a>
-      </div>
-
-      <div id="main">
-        <button class="openbtn" onclick="openNav()">&#9776;</button>
-        <button class="backbtn" onclick="">-</button>
-      </div>
+        <a-circle radius="25" color="#111" position="0 -4 -2" rotation="-90 45 0"></a-circle>
+        <a-circle radius="20" color="#333" position="0 -3.5 -2" rotation="-90 45 0"></a-circle>
+        <!-- <a-plane position="0 -3 23" rotation="-90 0 0" width="6" height="6" color="#7BC8A4" material="color: #333" scale="5 5 2"></a-plane>
+        <a-plane position="-15 3 29" rotation="180 -90 0" width="6" height="6" color="#7BC8A4" material="color: #333" scale="3 2 2"></a-plane> <!--right wall-->
+        <!-- <a-plane position="15 3 29" rotation="180 90 0" width="6" height="6" color="#7BC8A4" material="color: #333" scale="3 2 2"></a-plane> <!--left wall-->
+        <!-- <a-plane position="0 3 38" rotation="180 0 0" width="6" height="6" color="#7BC8A4" material="color: #333" scale="5 2 2"></a-plane> back wall --> -->
       
-    <div id= "text-container"> 
-        <p> // workbook prototype</p>
-        <p> //       interactive media</p>
-        <br>  </br>
-        <p> // mitch sandford 2025</p>
-        <br>  </br>
-        <p> - a space to showcase </p>
-        <p>   research and experimentation</p>
-    </div>
-    <!-- <canvas type="module"></canvas>" -->
-    
-    <!-- https://www.w3schools.com/howto/howto_js_collapse_sidebar.asp -->
-    <!-- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapse_sidebar-->
-    
+        <!-- week 7 . left
+        <a-plane position="14.9 6 23" rotation="180 90 0" width="6" height="6" color="#7BC8A4" material="color: #222" scale="0.9 0.9 2"></a-plane>
+        <a-entity font="../fonts/CourierPrime-Regular.ttf" position="15 7 32" rotation="0 -90 0" text="color: white; letterSpacing: 5; lineHeight: 50; value: [LINE AND LETTER SPACING] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam; width: 10; wrapCount: 50" >
+        </a-entity>
+        <a-plane position="14.9 0.25 23" rotation="180 90 0" width="6" height="6" color="#7BC8A4" material="color: #222" scale="0.9 0.9 2"></a-plane>
+         week 8 . center
+        <a-plane position="-3 6 37.9" rotation="180 0 0" width="6" height="6" color="#7BC8A4" material="color: #222" scale="0.9 0.9 2"></a-plane>
+        <a-plane position="12 6 37.9" rotation="180 0 0" width="6" height="6" color="#7BC8A4" material="color: #222" scale="0.9 0.9 2"></a-plane>
+         week 9 . right
+        <a-entity position="-15 7 29" rotation="0 90 0" text="color: white; letterSpacing: 5; lineHeight: 50; value: [LINE AND LETTER SPACING] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam; width: 3">
+        </a-entity> -->
+        <!-- img gallery-->
+    <a-entity id="image-gallery-container" position="0 0 0" scroll-y-control="sensitivity: 0.004;">
+        <a-curvedimage src="#week_1" height="22.0" radius="30   " theta-length="36"
+        rotation="0 100 0" scale="1 1 1" theta-start="160"></a-curvedimage>
+        <a-curvedimage src="#week_2" height="12.0" radius="30   " theta-length="36"
+        rotation="0 100 0" scale="1 1 1" theta-start="120"></a-curvedimage>
+        <a-curvedimage src="#week_3" height="22.0" radius="30   " theta-length="36"
+        rotation="0 100 0" scale="1 1 1" theta-start="80"></a-curvedimage>
+        <a-curvedimage src="#week_4" height="40.0" radius="30   " theta-length="36"
+        rotation="0 100 0" scale="1 1 1" theta-start="40"></a-curvedimage>
+        <a-curvedimage src="#week_5" height="23.0" radius="30   " theta-length="36"
+        rotation="0 100 0" scale="1 1 1" theta-start="0"></a-curvedimage>
+        <a-curvedimage src="#week_6" height="30.0" radius="30   " theta-length="36"
+        rotation="0 100 0" scale="1 1 1" theta-start="-40"></a-curvedimage>
+        <a-curvedimage src="#week_7" height="35.0" radius="30   " theta-length="36"
+        rotation="0 100 0" scale="1 1 1" theta-start="-80"></a-curvedimage> 
+        <a-curvedimage src="#week_8" height="36.0" radius="30   " theta-length="36" 
+        rotation="0 100 0" scale="1 1 1" theta-start="-120"></a-curvedimage>
+        <a-curvedimage src="#week_9" height="10.0" radius="30   " theta-length="36"
+        rotation="0 100 0" scale="1 1 1" theta-start="-160"></a-curvedimage>
+        </a-entity>
+
+    </a-scene>
+
+    <script>
+        // Ensure A-Frame is loaded before this script runs if main.js is also a module type
+       
+       AFRAME.registerComponent('custom-octahedron', {
+    init: function () {
+        const el = this.el;
+        const geometry = new AFRAME.THREE.BufferGeometry();
+
+        // Define the vertices of the custom shape
+        const sqrt2 = Math.sqrt(2);
+        const vertices = new Float32Array([
+            0, 4, 0,  // Vertex 0: top vertex (height 4 / 2)
+            -3 / sqrt2, 0, 3 / sqrt2, // Vertex 1: bottom left front
+            3 / sqrt2, 0, 3 / sqrt2,  // Vertex 2: bottom right front
+            3 / sqrt2, 0, -3 / sqrt2, // Vertex 3: bottom right back
+            -3 / sqrt2, 0, -3 / sqrt2, // Vertex 4: bottom left back
+            0, -4, 0  // Vertex 5: bottom vertex (height 4 / 2)
+        ]);
+
+        // Define the faces of the custom shape (triangles)
+        const indices = [
+            0, 1, 2, // Top front face
+            0, 2, 3, // Top right face
+            0, 3, 4, // Top back face
+            0, 4, 1, // Top left face
+            5, 1, 2, // Bottom front face
+            5, 2, 3, // Bottom right face
+            5, 3, 4, // Bottom back face
+            5, 4, 1  // Bottom left face
+        ];
+        
+        let material; // Declare material outside the try block
+        try {
+          geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+          geometry.setIndex(indices);
+          geometry.computeVertexNormals();
+
+          // Add some logging to inspect these!
+          console.log("Geometry:", geometry);
+
+          material = new AFRAME.THREE.MeshStandardMaterial({ //Assign value to material here
+            color: 0x4169E1, 
+            opacity: 0.10, 
+            transparent: true 
+          });   
+          console.log("Material:", material);
+
+          const customShape = new THREE.Mesh(geometry, material); // Check this line carefully!
+
+          // Add some logging to inspect these!
+          console.log("Custom Shape:", customShape);
+
+          el.setObject3D('mesh', customShape);
+        } catch (error) {
+          console.error("Error during customShape creation: ", error);
+          console.error("Geometry that was being used:", geometry);
+          console.error("Material that was being used", material); //Now this is defined
+        }
+   }
+},
+
+    AFRAME.registerComponent('scroll-y-control', {
+      schema: {
+        sensitivity: { type: 'number', default: 0.005 }, // Adjust for more/less movement per scroll
+        minY: { type: 'number', default: -Infinity },    // Optional: minimum Y position
+        maxY: { type: 'number', default: Infinity }     // Optional: maximum Y position
+      },
+
+      init: function () {
+        this.targetEl = this.el; // The entity this component is attached to
+        this.onWheel = this.onWheel.bind(this); // Bind the event handler
+
+        // Listen for wheel events on the A-Frame scene's canvas
+        this.el.sceneEl.canvas.addEventListener('wheel', this.onWheel, { passive: false });
+      },
+
+      onWheel: function (event) {
+        // Prevent default browser scroll only if the A-Frame canvas is focused
+        if (document.activeElement === this.el.sceneEl.canvas || this.el.sceneEl.canvas.contains(document.activeElement)) {
+            event.preventDefault();
+        }
+
+        let currentPosition = this.targetEl.getAttribute('position');
+        let deltaY = event.deltaY; // Positive for scroll down, negative for scroll up
+
+        // If scrolling down (deltaY > 0), decrease y.
+        // If scrolling up (deltaY < 0), increase y.
+        let newY = currentPosition.y - (deltaY * this.data.sensitivity);
+
+        // Clamp the new Y position if min/max are set to finite numbers
+        newY = Math.max(this.data.minY, Math.min(this.data.maxY, newY));
+
+        this.targetEl.setAttribute('position', {
+          x: currentPosition.x,
+          y: newY,
+          z: currentPosition.z
+        });
+      },
+
+      remove: function () {
+        // Clean up the event listener when the component is removed
+        if (this.el.sceneEl && this.el.sceneEl.canvas) {
+            this.el.sceneEl.canvas.removeEventListener('wheel', this.onWheel);
+        }
+      }
+    })
+
+);
+
+    </script>
+    <script type="module">
+        import { createSpiral, radiusFunc1, radiusFunc2, radiusFunc3, radiusFunc4 } from './main.js';
+        
+        // Attach the custom component to the entity
+        document.querySelector('#custom-octahedron').setAttribute('custom-octahedron', '');
+
+
+        const sceneEl = document.querySelector('a-scene');
+        sceneEl.addEventListener('loaded', () => {
+            const triangleEl = document.querySelector('#triangle');
+            setTimeout(() => {
+                try {
+                    const vertices = [
+                     new AFRAME.THREE.Vector3(0, 5.65, 0),
+                     new AFRAME.THREE.Vector3(-3, 1.58, 0),
+                     new AFRAME.THREE.Vector3(3, 1.58, 0)
+                 ];
+
+                const shape = new AFRAME.THREE.Shape();
+                shape.moveTo(vertices[0].x, vertices[0].y);
+                shape.lineTo(vertices[1].x, vertices[1].y);
+                shape.lineTo(vertices[2].x, vertices[2].y);
+                shape.lineTo(vertices[0].x, vertices[0].y);
+
+                const extrudeSettings = {
+                    steps: 1, // Adjust for smoothness
+                    depth: 0.01, // Adjust for thickness
+                    bevelEnabled: true, //Optional beveling
+                    bevelThickness: 0.01,
+                    bevelSize: 0.01,
+                };
+
+                    const geometry = new AFRAME.THREE.ExtrudeGeometry(shape, extrudeSettings);
+                    const material = new AFRAME.THREE.MeshBasicMaterial({ color: 'blue', opacity: 0.25, transparent: true });
+                    const mesh = new AFRAME.THREE.Mesh(geometry, material);
+                    triangleEl.setObject3D('mesh', mesh);
+                    console.log("Triangle successfully created");
+                } catch (error) {
+                    console.error("Error creating triangle:", error);
+                    console.error("triangleEl:", triangleEl);
+                    console.error("vertices:", vertices);
+                    console.error("lineGeometry:", lineGeometry);
+                    console.error("material:", material);
+                    console.error("line:", line);
+                }
+            }, 100);
+        });
+
+        AFRAME.registerComponent('spiral-floor', {
+            init: function () {
+                const THREE = AFRAME.THREE;
+                this.el.sceneEl.renderer.setPixelRatio(window.devicePixelRatio); // Optional: for sharper lines
+
+                this.numPoints = 250;
+                this.maxTheta = 9 * Math.PI;
+                this.a = 1.5; // Initial 'a' value
+                this.isAnimating = true;
+                this.animationDirection = 1;
+                this.animationSpeed = 0.0005; // Adjusted for potentially smoother animation in tick
+
+                this.spiralGroup = new THREE.Group();
+                this.spirals = [];
+
+                // Create Spirals
+                const spiralDataConfigs = [
+                    { func: radiusFunc1, color: 0x00ff00, negate: false }, // Green
+                    { func: radiusFunc2, color: 0x00ffff, negate: false }, // Cyan
+                    { func: radiusFunc3, color: 0xff0000, negate: false }, // Red
+                    { func: radiusFunc4, color: 0xffa500, negate: true  }  // Orange (negated)
+                ];
+
+                spiralDataConfigs.forEach(config => {
+                    const spiralObj = createSpiral(
+                        THREE,
+                        config.func,
+                        this.numPoints,
+                        this.maxTheta,
+                        config.color,
+                        config.negate
+                    );
+                    this.spirals.push(spiralObj);
+                    this.spiralGroup.add(spiralObj.mesh);
+                });
+
+                // Orient the group to be a floor
+                this.spiralGroup.rotation.x = -Math.PI / 2;
+                
+                this.el.setObject3D('floor-spirals', this.spiralGroup);
+
+                // Handle click to toggle animation
+                this.toggleAnimation = () => {
+                    this.isAnimating = !this.isAnimating;
+                    console.log("Spiral Animation " + (this.isAnimating ? "Resumed" : "Paused"));
+                };
+                this.el.sceneEl.canvas.addEventListener('click', this.toggleAnimation);
+            },
+
+            tick: function (time, timeDelta) {
+                if (!this.isAnimating) {
+                    return;
+                }
+
+                // Update 'a' value
+                this.a += this.animationDirection * this.animationSpeed * (timeDelta / 16.666); // Normalize speed
+
+                // Reverse direction if 'a' reaches the limits
+                if (this.a >= 2.0) {
+                    this.a = 2.0;
+                    this.animationDirection = -1;
+                } else if (this.a <= 1.0) {
+                    this.a = 1.0;
+                    this.animationDirection = 1;
+                }
+
+                // Update spiral vertices
+                this.spirals.forEach(spiral => {
+                    spiral.update(this.a);
+                });
+            },
+            remove: function () {
+                this.el.sceneEl.canvas.removeEventListener('click', this.toggleAnimation);
+            }
+        });
+        
+    </script>    
 </body>
 </html>
